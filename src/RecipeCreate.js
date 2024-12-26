@@ -1,55 +1,84 @@
 import React, { useState } from "react";
 
-function RecipeCreate({createRecipe}) {
-
-  // TODO: When the form is submitted, a new recipe should be created, and the form contents cleared.
-  // TODO: Add the required input and textarea form elements.
-  // TODO: Add the required submit and change handlers
-
-  const defaultData = {
+function RecipeCreate({ recipes, setRecipes }) {
+  const initialForm = {
     name: "",
     cuisine: "",
     photo: "",
     ingredients: "",
-    preparation: ""
+    preparation: "",
+  };
+  const [formData, setFormData] = useState({ ...initialForm });
+
+  // everytime something in target changes, updates the FormData
+  const handleChange = ({ target }) => {
+    setFormData({
+      ...formData,
+      [target.name]: target.value,
+    });
   };
 
-  const [formData, setFormData] = useState(defaultData)
-
-  const resetForm = () => setFormData(defaultData)
-  
-  const editValue = function({target})
-  {
-    const newData = {...formData, [target.name]: target.value}
-    setFormData(newData)
-  }
-
-  const submitHandler = function(event)
-  {
-    event.preventDefault()
-    createRecipe(formData)
-    resetForm()
-  }
+  // when hitting submit
+  // resets formData to initialForm
+  // fixed issue: setRecipes was an object not an array
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    setRecipes([...recipes, formData]);
+    setFormData({ ...initialForm });
+  };
 
   return (
-    <form name="create" onSubmit={submitHandler}>
+    <form name="create" onSubmit={handleSubmit}>
       <table>
-        <tbody className="content_row">
+        <tbody>
           <tr>
             <td>
-              <input type="text" value={formData.name} onChange={editValue} name="name" required placeholder="Name"/>
+              <input
+                id="name"
+                type="text"
+                name="name"
+                placeholder="Name"
+                onChange={handleChange}
+                value={formData.name}
+              />
             </td>
             <td>
-              <input type="text" value={formData.cuisine} onChange={editValue} name="cuisine" required placeholder="Cuisine"/>
+              <input
+                id="cuisine"
+                type="text"
+                name="cuisine"
+                placeholder="Cuisine"
+                onChange={handleChange}
+                value={formData.cuisine}
+              />
             </td>
             <td>
-              <input type="url" value={formData.photo} onChange={editValue} name="photo" required placeholder="URL"/>
+              <input
+                id="photo"
+                type="url"
+                name="photo"
+                placeholder="URL"
+                onChange={handleChange}
+                value={formData.photo}
+              />
             </td>
-            <td>
-              <textarea type="text" value={formData.ingredients} onChange={editValue} name="ingredients" required placeholder="Ingredients" />
+            <td className="area">
+              <textarea
+                id="ingredients"
+                name="ingredients"
+                placeholder="Ingredients"
+                onChange={handleChange}
+                value={formData.ingredients}
+              />
             </td>
-            <td>
-              <textarea type="text" value={formData.preparation} onChange={editValue} name="preparation" required placeholder="Preparation"/>
+            <td className="area">
+              <textarea
+                id="preparation"
+                name="preparation"
+                placeholder="Preparation"
+                onChange={handleChange}
+                value={formData.preparation}
+              />
             </td>
             <td>
               <button type="submit">Create</button>
