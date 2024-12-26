@@ -10,7 +10,7 @@ function RecipeCreate({ recipes, setRecipes }) {
   };
   const [formData, setFormData] = useState({ ...initialForm });
 
-  // everytime something in target changes, updates the FormData
+  // Update formData when input changes
   const handleChange = ({ target }) => {
     setFormData({
       ...formData,
@@ -18,12 +18,16 @@ function RecipeCreate({ recipes, setRecipes }) {
     });
   };
 
-  // when hitting submit
-  // resets formData to initialForm
-  // fixed issue: setRecipes was an object not an array
+  // Handle form submission
   const handleSubmit = (event) => {
     event.preventDefault();
-    setRecipes([...recipes, formData]);
+    // Create a new recipe object
+    const newRecipe = {
+      ...formData,
+    };
+    // Update the recipes state
+    setRecipes([...recipes, newRecipe]);
+    // Reset formData to initial values
     setFormData({ ...initialForm });
   };
 
@@ -40,6 +44,7 @@ function RecipeCreate({ recipes, setRecipes }) {
                 placeholder="Name"
                 onChange={handleChange}
                 value={formData.name}
+                required
               />
             </td>
             <td>
@@ -50,6 +55,7 @@ function RecipeCreate({ recipes, setRecipes }) {
                 placeholder="Cuisine"
                 onChange={handleChange}
                 value={formData.cuisine}
+                required
               />
             </td>
             <td>
@@ -60,6 +66,7 @@ function RecipeCreate({ recipes, setRecipes }) {
                 placeholder="URL"
                 onChange={handleChange}
                 value={formData.photo}
+                required
               />
             </td>
             <td className="area">
@@ -69,6 +76,7 @@ function RecipeCreate({ recipes, setRecipes }) {
                 placeholder="Ingredients"
                 onChange={handleChange}
                 value={formData.ingredients}
+                required
               />
             </td>
             <td className="area">
@@ -78,6 +86,7 @@ function RecipeCreate({ recipes, setRecipes }) {
                 placeholder="Preparation"
                 onChange={handleChange}
                 value={formData.preparation}
+                required
               />
             </td>
             <td>
